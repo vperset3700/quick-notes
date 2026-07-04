@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated data and runtime state
+cours_data.db
+cours_data.db.*
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+combined_pdfs_text.txt
+n8n_data/
+n8n_custom_nodes/node_modules/
+*.log
+
+# Large source archives and extracted course content
+CentraleSupelecArchive/
+cours_CS/
+
+# Local OS files
+.DS_Store
+CentraleSupelecArchive/
+cours_CS/
+.venv/

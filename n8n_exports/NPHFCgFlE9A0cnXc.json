@@ -1,0 +1,1068 @@
+{
+  "updatedAt": "2026-06-02T21:55:50.178Z",
+  "createdAt": "2025-12-27T18:04:13.558Z",
+  "id": "NPHFCgFlE9A0cnXc",
+  "name": "ficheur",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "file test",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "file",
+              "fieldType": "file",
+              "acceptFileTypes": ".pdf",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -752,
+        -320
+      ],
+      "id": "824942f7-dca4-4e69-8348-cbe7f7f5c49e",
+      "name": "On form submission",
+      "webhookId": "2dffbb55-fa59-4e01-864a-4be83cc7206b"
+    },
+    {
+      "parameters": {
+        "pageId": {
+          "__rl": true,
+          "value": "https://www.notion.so/MATHS-3248bd07f54c807b8d12ff241f30a10e?source=copy_link",
+          "mode": "url"
+        },
+        "title": "={{ $('Résumeur').item.json.output.title }}",
+        "options": {
+          "icon": "={{ $('Résumeur').item.json.output.emoji_icon }}"
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        -240
+      ],
+      "id": "bbbe8fce-4c30-4c92-aa21-acade78febdf",
+      "name": "Create a page",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "5pwZBTxBQcce6EQw",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "pageId": "={{ $json.id }}",
+        "markdown": "={{ $('Résumeur').item.json.output.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-notion-markdown-unified.notionMarkdownUnified",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        144
+      ],
+      "id": "36d52ac4-aa0b-4c59-b22e-08d1a9af1c7c",
+      "name": "Notion Markdown Unified",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "5pwZBTxBQcce6EQw",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemma-4-26b-a4b-it",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        208
+      ],
+      "id": "e4611c00-850e-4b83-ad46-6e3ebe5ebae8",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "EZME0JdUfGRtPN0r",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        -224
+      ],
+      "id": "a4aa3a94-4274-4f0d-b8fc-3a6efffa97b4",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"Réseau de neurones\",\n\t\"text\": \"Résumé ici ..\",\n    \"emoji_icon\":\"emoji ici..\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -16
+      ],
+      "id": "8e3ac0c4-8c1e-407e-9f38-e6da4db3fc6a",
+      "name": "Structured Output Parser",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"mathematics\": true,\n\t\"informatics\": false,\n    \"cybersecurity\": false,\n    \"machine learning\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -256,
+        -32
+      ],
+      "id": "ff5da4f4-10d5-42cf-bcff-21029c408c94",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "pageId": {
+          "__rl": true,
+          "value": "https://www.notion.so/INFO-3248bd07f54c808d904bd4dd234439e1",
+          "mode": "url"
+        },
+        "title": "={{ $('Résumeur').item.json.output.title }}",
+        "options": {
+          "icon": "={{ $('Résumeur').item.json.output.emoji_icon }}"
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        -96
+      ],
+      "id": "cdfbb18d-29ab-4896-b578-5d2cd8ccad49",
+      "name": "Create a page1",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "5pwZBTxBQcce6EQw",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "pageId": {
+          "__rl": true,
+          "value": "https://www.notion.so/CYBER-3248bd07f54c8073846ccbf31dedd93f",
+          "mode": "url"
+        },
+        "title": "={{ $('Résumeur').item.json.output.title }}",
+        "options": {
+          "icon": "={{ $('Résumeur').item.json.output.emoji_icon }}"
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        48
+      ],
+      "id": "246b6310-a484-4a09-a34a-d7b1e6ce2223",
+      "name": "Create a page2",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "5pwZBTxBQcce6EQw",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "pageId": {
+          "__rl": true,
+          "value": "https://www.notion.so/MACHINE-LEARNING-3248bd07f54c8097af24e44843606e85",
+          "mode": "url"
+        },
+        "title": "={{ $('Résumeur').item.json.output.title }}",
+        "simple": false,
+        "blockUi": {
+          "blockValues": []
+        },
+        "options": {
+          "icon": "={{ $('Résumeur').item.json.output.emoji_icon }}"
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        208
+      ],
+      "id": "2d486afc-b605-4414-8652-2ad68c941f2e",
+      "name": "Create a page3",
+      "retryOnFail": true,
+      "credentials": {
+        "notionApi": {
+          "id": "5pwZBTxBQcce6EQw",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "abbc4b6a-d9b1-4dfd-a27f-480b0e17be74",
+              "leftValue": "={{ $('Classificateur').item.json.output.mathematics }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        528,
+        -224
+      ],
+      "id": "d24f5e5d-1549-45d8-9167-003a5acf028c",
+      "name": "If Math"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "abbc4b6a-d9b1-4dfd-a27f-480b0e17be74",
+              "leftValue": "={{ $('Classificateur').item.json.output.informatics }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        -64
+      ],
+      "id": "bb8f7d07-7226-49b1-a590-254b2c1be0d5",
+      "name": "If Info"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "abbc4b6a-d9b1-4dfd-a27f-480b0e17be74",
+              "leftValue": "={{ $('Classificateur').item.json.output.cybersecurity }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        80
+      ],
+      "id": "7fcd41f6-0161-4989-8670-49c8ee82129d",
+      "name": "If cyber"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "abbc4b6a-d9b1-4dfd-a27f-480b0e17be74",
+              "leftValue": "={{ $('Classificateur').item.json.output[\"machine learning\"] }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        240
+      ],
+      "id": "b86b73e5-25f7-4f27-b45d-4bfb37ee5545",
+      "name": "If ML"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Résume ce cours, trouve un titre pour ma fiche de révision et un emoji. Ne conserve que les chapitres les plus importants. La fiche de synthèse doit faire 2 pages maximum :\n{{ $('Extract from File').item.json.text }}\nNe renvoie que le json pur demandé",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -32,
+        -272
+      ],
+      "id": "320b6cc9-93a3-4f51-877b-587cff2da059",
+      "name": "Résumeur",
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Veuillez classer le fichier d'entrée dans l'une des catégories suivantes : mathématiques, informatique, cybersécurité et apprentissage automatique. Une seule doit être choisie ; si aucune ne correspond, vous pouvez tout mettre à \"false\".\nContenu des premières lignes : {{ $json.text.substring(0, 1500) }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -432,
+        -352
+      ],
+      "id": "f1e5ab95-ad9e-47f8-b170-524529bea61e",
+      "name": "Classificateur",
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Résumeur').item.json.output.text }}",
+        "options": {
+          "systemMessage": "Tu es un expert en iconographie pédagogique. Ta mission est d'analyser une fiche de cours Notion existante et de décider si l'ajout d'un schéma logique ou d'une illustration historique/scientifique apporterait une valeur ajoutée significative à l'apprentissage.\n\nTes Outils (Facultatifs) :\n\ntool_mermaid_diagram :\n\nUsage : Pour transformer des concepts abstraits, des processus, des cycles ou des hiérarchies en schémas visuels.\n\nEntrée : Le code source Mermaid complet (ex: graph TD...).\n\nConsigne : Assure-toi que la syntaxe Mermaid est valide et adaptée au rendu Notion.\n\ntool_wikimedia_search :\n\nUsage : Pour illustrer des faits concrets, des personnages, des lieux ou des objets réels.\n\nEntrée : Une chaîne de caractères optimisée pour une recherche d'image (ex: \"Napoléon Ier portrait\", \"structure cellule animale\").\n\nConsigne : Utilise des termes précis en anglais ou français pour maximiser les chances de trouver un fichier média sur Wikimedia Commons.\n\nInstructions de travail :\n\nAnalyse : Parcoure le contenu de la fiche. Si le contenu est déjà clair et ne nécessite pas d'aide visuelle, ne fais rien.\n\nDécision :\n\nSi un processus est décrit : Génère le code Mermaid et utilise tool_mermaid_diagram.\n\nSi un sujet concret est abordé : Définis une requête de recherche et utilise tool_wikimedia_search.\n\nTu peux utiliser les deux, un seul, ou aucun outil selon la pertinence.\n\nPriorité : Ne surcharge pas la fiche. Maximum 1 ou 2 enrichissements par cours.\n\nFormat de sortie :\n\nUne fois les outils appelés (ou non), produis un compte-rendu d'exécution d'une seule phrase.\n\nExemple 1 : \"Schéma Mermaid sur la photosynthèse ajouté.\"\n\nExemple 2 : \"Recherche Wikimedia lancée pour le portrait de Louis XIV.\"\n\nExemple 3 : \"Aucun enrichissement visuel jugé nécessaire pour ce contenu.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1520,
+        144
+      ],
+      "id": "435bcfd6-2e8c-496a-a87b-2cb2d3e94e3a",
+      "name": "embellisseur",
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "GRytLgNmow1q5sAZ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/GRytLgNmow1q5sAZ",
+          "cachedResultName": "tool_wikimedia_search"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "wiki_search": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('wiki_search', ``, 'string') }}",
+            "page_id": "={{ $json.results[0].parent.page_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "wiki_search",
+              "displayName": "wiki_search",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "page_id",
+              "displayName": "page_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        400
+      ],
+      "id": "4bfd2530-939f-4084-a185-3373cd2cac7c",
+      "name": "Call 'tool_wikimedia_search'"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Ajouter un bloc de code Mermaid à une fiche de révision Notion",
+        "method": "PATCH",
+        "url": "=https://api.notion.com/v1/blocks/{{ $json.results[0].parent.page_id }}/children",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"children\": [\n    {\n      \"object\": \"block\",\n      \"type\": \"code\",\n      \"code\": {\n        \"rich_text\": [\n          { \n            \"type\": \"text\", \n            \"text\": { \"content\": {{ JSON.stringify($fromAI('parameters2_Name', ``, 'string')) }} } \n          }\n        ],\n        \"language\": \"mermaid\"\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        1280,
+        432
+      ],
+      "id": "8d252e1f-ba85-41d6-be94-838e191b4402",
+      "name": "tool_mermaid",
+      "credentials": {
+        "notionApi": {
+          "id": "5pwZBTxBQcce6EQw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "688bc3bc-b06c-49cf-8f41-bd5b7dbcaa3c",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -816,
+        -176
+      ],
+      "id": "1ff40fe6-68c6-4763-ab6e-1d6e8739bd39",
+      "name": "Webhook",
+      "webhookId": "688bc3bc-b06c-49cf-8f41-bd5b7dbcaa3c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://callback-api:8000/callback",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "hash",
+              "value": "={{ $('Webhook').item.json.body.hash }}"
+            },
+            {
+              "name": "status",
+              "value": "completed"
+            },
+            {
+              "name": "error",
+              "value": "="
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1968,
+        176
+      ],
+      "id": "147264e6-b89f-4195-905f-33dcb394cce7",
+      "name": "callback sqlite"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst errors = items\n  .map((item) => item.json.error)\n  .filter((error) => error !== undefined && error !== null && String(error).trim() !== \"\")\n  .map((error) => String(error).trim());\n\nreturn [\n  {\n    json: {\n      error: errors.join(\" | \"),\n      count: errors.length,\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1776,
+        -512
+      ],
+      "id": "e49a7650-7336-46ca-a213-ac7be140c310",
+      "name": "error_cat"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9d0d8aad-d52f-43ed-b548-68d2e4d4aca7",
+              "leftValue": "={{ $json.output.mathematics }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "0976aee1-4fc9-425b-8b6a-74aadb31b4a8",
+              "leftValue": "={{ $json.output.informatics }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "1e96b7b3-fc37-481c-8be6-5b0923ea9ec7",
+              "leftValue": "={{ $json.output.cybersecurity }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "9a6cf6e6-2dd8-45b1-8d17-a9c687e9561f",
+              "leftValue": "={{ $json.output['machine learning'] }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -192,
+        -544
+      ],
+      "id": "5e29d582-2c8b-4de5-b0fd-3a5b2a682d38",
+      "name": "If HS"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://callback-api:8000/callback",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "hash",
+              "value": "={{ $('Webhook').item.json.body.hash }}"
+            },
+            {
+              "name": "status",
+              "value": "completed"
+            },
+            {
+              "name": "error"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -80,
+        -704
+      ],
+      "id": "d2a0a543-0833-485d-adc1-064b5d19ecaa",
+      "name": "HS fallback"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://callback-api:8000/callback",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "hash",
+              "value": "={{ $('Webhook').item.json.body.hash }}"
+            },
+            {
+              "name": "status",
+              "value": "=failed"
+            },
+            {
+              "name": "error",
+              "value": "={{ $json.error }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1968,
+        -544
+      ],
+      "id": "410c482a-adbd-4a38-9515-ab273084aea8",
+      "name": "error callback"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a page": {
+      "main": [
+        [
+          {
+            "node": "Notion Markdown Unified",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_cat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Résumeur",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Classificateur",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "embellisseur",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Classificateur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Résumeur",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Classificateur",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Math": {
+      "main": [
+        [
+          {
+            "node": "Create a page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Info": {
+      "main": [
+        [
+          {
+            "node": "Create a page1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If cyber": {
+      "main": [
+        [
+          {
+            "node": "Create a page2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If ML": {
+      "main": [
+        [
+          {
+            "node": "Create a page3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a page1": {
+      "main": [
+        [
+          {
+            "node": "Notion Markdown Unified",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_cat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a page2": {
+      "main": [
+        [
+          {
+            "node": "Notion Markdown Unified",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_cat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a page3": {
+      "main": [
+        [
+          {
+            "node": "Notion Markdown Unified",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_cat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Résumeur": {
+      "main": [
+        [
+          {
+            "node": "If Math",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If Info",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If cyber",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If ML",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_cat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificateur": {
+      "main": [
+        [
+          {
+            "node": "If HS",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_cat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Markdown Unified": {
+      "main": [
+        [
+          {
+            "node": "embellisseur",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_cat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'tool_wikimedia_search'": {
+      "ai_tool": [
+        [
+          {
+            "node": "embellisseur",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "tool_mermaid": {
+      "ai_tool": [
+        [
+          {
+            "node": "embellisseur",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "embellisseur": {
+      "main": [
+        [
+          {
+            "node": "callback sqlite",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_cat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "error_cat": {
+      "main": [
+        [
+          {
+            "node": "error callback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If HS": {
+      "main": [
+        [
+          {
+            "node": "HS fallback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Résumeur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "bcf7ebd9-c8f4-4737-9fdf-7728b92cd204",
+  "activeVersionId": "bcf7ebd9-c8f4-4737-9fdf-7728b92cd204",
+  "versionCounter": 365,
+  "triggerCount": 2,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2025-12-27T18:04:13.563Z",
+      "createdAt": "2025-12-27T18:04:13.563Z",
+      "role": "workflow:owner",
+      "workflowId": "NPHFCgFlE9A0cnXc",
+      "projectId": "sRmB2OxTmMy2K7hA",
+      "project": {
+        "updatedAt": "2025-12-27T18:01:23.953Z",
+        "createdAt": "2025-12-27T17:57:27.309Z",
+        "id": "sRmB2OxTmMy2K7hA",
+        "name": "Victor Perset <victor.perset@outlook.fr>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "9ec12d5a-36e9-49b7-b515-7062ec4db149"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": "Version bcf7ebd9",
+    "description": ""
+  }
+}

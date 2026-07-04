@@ -1,0 +1,257 @@
+{
+  "updatedAt": "2026-06-02T21:50:50.611Z",
+  "createdAt": "2026-05-10T20:46:55.952Z",
+  "id": "GRytLgNmow1q5sAZ",
+  "name": "tool_wikimedia_search",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "wiki_search"
+            },
+            {
+              "name": "page_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "484d56e3-8a66-4ef8-a854-f33f141eaaa1",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "url": "https://en.wikipedia.org/w/api.php",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "action",
+              "value": "query"
+            },
+            {
+              "name": "format",
+              "value": "json"
+            },
+            {
+              "name": "prop",
+              "value": "pageimages"
+            },
+            {
+              "name": "generator",
+              "value": "search"
+            },
+            {
+              "name": "gsrsearch",
+              "value": "={{ $json.wiki_search }}"
+            },
+            {
+              "name": "piprop",
+              "value": "original"
+            },
+            {
+              "name": "gsrlimit",
+              "value": "1"
+            },
+            {
+              "name": "origin",
+              "value": "*"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RevionSheetBot/1.0 (contact: victor.perset@outlook.fr)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5750dbf1-e765-4060-befb-0c2f8054348a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// On récupère le premier item entrant (la réponse de l'API HTTP)\nconst item = $input.item.json;\n\n// On initialise l'URL à null\nlet imageUrl = null;\n\n// Vérification en cascade pour éviter les erreurs \"undefined\"\nif (item.query && item.query.pages) {\n    // L'API utilise l'ID de la page comme clé, on récupère donc la première clé disponible\n    const pageId = Object.keys(item.query.pages)[0];\n    const page = item.query.pages[pageId];\n\n    // On vérifie si la propriété 'original' et 'source' existent\n    if (page.original && page.original.source) {\n        imageUrl = page.original.source;\n    }\n}\n\n// On retourne l'URL (ou null si rien n'est trouvé)\nreturn {\n    imageUrl: imageUrl,\n    found: imageUrl !== null\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "e559c822-c9b9-468d-8c36-4a71c2deb199",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "19dfcb26-5884-481f-b931-10154fe1e2f7",
+              "leftValue": "={{ $json.found }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        624,
+        0
+      ],
+      "id": "e7021737-8a8d-4ace-a19e-75e344d1f06f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.notion.com/v1/blocks/{{ $('When Executed by Another Workflow').item.json.page_id }}/children",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"children\": [\n    {\n      \"object\": \"block\",\n      \"type\": \"image\",\n      \"image\": {\n        \"type\": \"external\",\n        \"external\": {\n          \"url\": \"{{ $json.imageUrl }}\"\n        }\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        848,
+        -16
+      ],
+      "id": "d1c6179c-76c2-41b2-abaf-d48234c68b79",
+      "name": "HTTP Request1",
+      "credentials": {
+        "notionApi": {
+          "id": "5pwZBTxBQcce6EQw",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "wiki_search": "horse",
+          "page_id": "3738bd07-f54c-8107-9e02-fd5548bd7cc6"
+        }
+      }
+    ]
+  },
+  "versionId": "43c75f23-e106-453f-9890-9fcb2c44fdf5",
+  "activeVersionId": "43c75f23-e106-453f-9890-9fcb2c44fdf5",
+  "versionCounter": 115,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-05-10T20:46:55.957Z",
+      "createdAt": "2026-05-10T20:46:55.957Z",
+      "role": "workflow:owner",
+      "workflowId": "GRytLgNmow1q5sAZ",
+      "projectId": "sRmB2OxTmMy2K7hA",
+      "project": {
+        "updatedAt": "2025-12-27T18:01:23.953Z",
+        "createdAt": "2025-12-27T17:57:27.309Z",
+        "id": "sRmB2OxTmMy2K7hA",
+        "name": "Victor Perset <victor.perset@outlook.fr>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "9ec12d5a-36e9-49b7-b515-7062ec4db149"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": "Version 43c75f23",
+    "description": ""
+  }
+}

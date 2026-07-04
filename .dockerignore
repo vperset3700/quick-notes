@@ -1,0 +1,31 @@
+.git
+.venv
+**pycache**/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+\*.py[cod]
+
+# Generated data and runtime state
+
+cours_data.db
+cours_data.db.\*
+_.db-shm
+_.db-wal
+_.sqlite
+_.sqlite-shm
+_.sqlite-wal
+combined_pdfs_text.txt
+n8n_data/
+n8n_exports/
+_.log
+
+# Large course archives
+
+CentraleSupelecArchive/
+cours_CS/
+
+# Local IDE and OS files
+
+.DS_Store
+.vscode/
